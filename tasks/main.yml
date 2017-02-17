@@ -1,0 +1,18 @@
+---
+- name: Verifing if ioncube is installed
+  stat: path="{{ ioncube_path }}/ioncube"
+  register: ioncube_dir
+
+- name: Download Ioncube loaders
+  get_url: url=http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz dest="{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz"
+  when: ioncube_dir.stat.exists == False
+
+- unarchive:
+    src: "{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz"
+    dest: "{{ ioncube_path }}"
+    remote_src: True
+  when: ioncube_dir.stat.exists == False
+
+- name: Delete zip file
+  file: path="{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz" state=absent
+  when: ioncube_dir.stat.exists == False
