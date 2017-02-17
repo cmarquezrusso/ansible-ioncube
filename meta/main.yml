@@ -207,7 +207,7 @@ galaxy_info:
   #  - all
   #  - Any
 
-  galaxy_tags: [ioncube, ioncube loaders, php]
+  galaxy_tags: [ioncube, ioncubeloaders, php]
     # List tags for your role here, one per line. A tag is
     # a keyword that describes and categorizes the role.
     # Users find roles by searching for tags. Be sure to
