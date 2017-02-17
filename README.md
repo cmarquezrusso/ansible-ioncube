@@ -1,5 +1,6 @@
 Ioncube
 =========
+[![Build Status](https://travis-ci.org/cristian04/ansible-ioncube.svg?branch=master)](https://travis-ci.org/cristian04/ansible-ioncube)
 
 This role will download  the Ioncube loaders 64Bits into a specified folder.
 
