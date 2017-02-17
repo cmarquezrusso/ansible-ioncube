@@ -14,8 +14,6 @@ Role Variables
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     ---
     - name: Install ioncube
       hosts: all
@@ -23,7 +21,7 @@ Including an example of how to use your role (for instance, with variables passe
       vars:
         ioncube_path: /opt
       roles:
-        - { role: cristian04.ioncube }
+        - { role: cristian04.ansible-ioncube }
 
 License
 -------
