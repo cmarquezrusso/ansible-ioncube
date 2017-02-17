@@ -1,7 +1,7 @@
 Ioncube
 =========
 
-This role will download  the Ioncube loaders 64Bits into a specified folder.
+This role will download  the [Ioncube loaders 64Bits](http://www.ioncube.com/loaders.php) into a specified folder.
 
 By default, it will decompress the package into `/opt` but it can be changed using the ioncube_path variable.
 
@@ -32,4 +32,4 @@ BSD
 Author Information
 ------------------
 
-[Cristian Russo](mailto:cristian.russo@clearpoint.co.nz)
+[Cristian Russo](http://www.cristianmarquez.me)
