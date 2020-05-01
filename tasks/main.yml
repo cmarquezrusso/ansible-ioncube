@@ -1,18 +1,47 @@
 ---
-- name: Verifing if ioncube is installed
-  stat: path="{{ ioncube_path }}/ioncube"
+- name: verifing if ioncube is installed
+  stat: 
+    path: "{{ ioncube_path }}/ioncube"
   register: ioncube_dir
 
-- name: Download Ioncube loaders
-  get_url: url=http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz dest="{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz"
+- name: download Ioncube loaders
+  get_url: 
+    url: http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz 
+    dest: "{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz"
   when: ioncube_dir.stat.exists == False
 
-- unarchive:
+- name: unpack ioncube
+  unarchive:
     src: "{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz"
     dest: "{{ ioncube_path }}"
     remote_src: True
   when: ioncube_dir.stat.exists == False
 
-- name: Delete zip file
-  file: path="{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz" state=absent
+- name: delete zip file
+  file: 
+    path: "{{ ioncube_path }}/ioncube_loaders_lin_x86-64.tar.gz" 
+    state: absent
   when: ioncube_dir.stat.exists == False
+
+- name: get php extension path
+  shell: "php -i | grep extension_dir | awk '{print $3}'"
+  register: php_extension_path
+- debug: 
+    msg: "{{ php_extension_path.stdout }}"  
+
+- name: copy ioncube loader to php extension path
+  copy:
+    src: "{{ ioncube_path }}/ioncube/ioncube_loader_lin_{{ php_version }}.so"
+    dest: "{{ php_extension_path.stdout }}"
+    remote_src: yes
+
+- name: add php-fpm conf.d files to load ioncube
+  shell: "echo 'zend_extension=ioncube_loader_lin_{{ php_version }}.so' > /etc/php/{{ php_version }}/fpm/conf.d/00-ioncube-loader.ini"
+
+- name: add php-cli conf.d files to load ioncube
+  shell: "echo 'zend_extension=ioncube_loader_lin_{{ php_version }}.so' > /etc/php/{{ php_version }}/cli/conf.d/00-ioncube-loader.ini"
+
+- name: restart php-fpm
+  service:
+    name: "php{{ php_version }}-fpm"
+    state: restarted
