@@ -1,3 +1,4 @@
 ---
 # defaults file for ioncube
 ioncube_path: /opt
+php_vesion: 7.3
